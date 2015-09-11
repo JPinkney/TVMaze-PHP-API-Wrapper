@@ -121,6 +121,62 @@ class TVMaze {
     function searchByPerson($name){
         $name = strtolower($name);
         $url = self::APIURL.'/search/people?q='.$name;
+        $people = $this->getFile($url);
+        return $people;
+    }
+
+    function searchBySchedule($country, $date){
+
+    }
+
+    function searchShowByShowID($ID){
+        $url = self::APIURL.'/shows/'.$ID;
+        $show = $this->getFile($url);
+        return new TVShow($show);
+    }
+
+    //This has to be a new class of episodes
+    function searchEpisodesByShowID($ID){
+        $url = self::APIURL.'/shows/'.$ID.'/episodes';
+        $show = $this->getFile($url);
+        return new TVShow($show);
+    }
+
+    //This has to be a new class of cast
+    function searchCastByShowID($ID){
+        $url = self::APIURL.'/shows/'.$ID.'/cast';
+        $show = $this->getFile($url);
+        return new TVShow($show);
+    }
+
+    //A little more work as to be done with this and testing
+    function searchAllShowsByPage($page){
+        $url = self::APIURL.'/shows?page'.$page;
+        $shows = $this->getFile($url);
+
+        $relevant_shows = array();
+        foreach($shows as $series){
+            $TVShow = new TVShow($series);
+            array_push($relevant_shows, $TVShow);
+        }
+        return $relevant_shows;
+    }
+
+    //Needs a people class
+    function getPersonByID($ID){
+        $url = self::APIURL.'/people/'.$ID;
+        $show = $this->getFile($url);
+        return new TVShow($show);
+    }
+
+    function getCastCreditsByID($ID){
+        $url = self::APIURL.'/people/'.$ID.'/castcredits';
+        $show = $this->getFile($url);
+        return new TVShow($show);
+    }
+
+    function getCrewCreditsByID($ID){
+        $url = self::APIURL.'/people/'.$ID.'/crewcredits';
         $show = $this->getFile($url);
         return new TVShow($show);
     }
