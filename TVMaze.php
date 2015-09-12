@@ -1,5 +1,15 @@
 <?php
 
+class Crew {
+
+    public $type;
+
+    function __construct($crew_data){
+        $this->type = $crew_data['type'];
+    }
+
+};
+
 class Episode {
 
     public $id;
@@ -54,6 +64,10 @@ class Actor {
     }
 
 };
+
+class Character extends Actor {
+
+}
 
 class TVShow {
 
@@ -127,7 +141,7 @@ class TVMaze {
 
     /*
      *
-     * Takes in a show name with optional modifiers (episodes)
+     * Takes in a show name
      * Outputs array of all the related shows for that given name
      *
      */
@@ -164,6 +178,7 @@ class TVMaze {
     /*
      *
      * Allows show lookup by using TVRage or TheTVDB ID
+     * site is the string of the website (either 'tvrage' or 'thetvdb') and the id is the id of the show on that respective site
      *
      */
     function lookupByID($site, $ID){
@@ -173,6 +188,11 @@ class TVMaze {
         return new TVShow($show);
     }
 
+    /*
+     *
+     * Takes in an actors name and outputs their actor object
+     *
+     */
     function searchByPerson($name){
         $name = strtolower($name);
         $url = self::APIURL.'/search/people?q='.$name;
@@ -184,13 +204,22 @@ class TVMaze {
 
     }
 
+    /*
+     *
+     * Takes in a show ID and outputs the TVShow Object
+     *
+     */
     function searchShowByShowID($ID){
         $url = self::APIURL.'/shows/'.$ID;
         $show = $this->getFile($url);
         return new TVShow($show);
     }
 
-    //This has to be a new class of episodes
+    /*
+     *
+     * Takes in a show ID and outputs all the episode objects for that show in an array
+     *
+     */
     function searchEpisodesByShowID($ID){
         $url = self::APIURL.'/shows/'.$ID.'/episodes';
         $episodes = $this->getFile($url);
@@ -204,18 +233,38 @@ class TVMaze {
         return $allEpisodes;
     }
 
-    //This has to be a new class of cast
-    function searchCastByShowID($ID){
+    /*
+     *
+     * Takes in a show ID and outputs all of the cast members in the form (actor, character)
+     *
+     */
+    function getCastByShowID($ID){
         $url = self::APIURL.'/shows/'.$ID.'/cast';
-        $show = $this->getFile($url);
-        return new TVShow($show);
+        $people = $this->getFile($url);
+
+        $cast = array();
+        foreach($people as $person){
+            $actor = new Actor($person['person']);
+            $character = new Character($person['character']);
+            array_push($cast, array($actor, $character));
+        }
+
+        return $cast;
     }
 
-    //A little more work as to be done with this and testing
-    function searchAllShowsByPage($page){
-        $url = self::APIURL.'/shows?page'.$page;
-        $shows = $this->getFile($url);
+    /*
+     *
+     * Gets a list of all shows in the database. Page number is optional (caps display at 250 results)
+     *
+     */
+    function searchAllShowsByPage($page=null){
+        if($page == null){
+            $url = self::APIURL.'/shows';
+        }else{
+            $url = self::APIURL.'/shows?page'.$page;
+        }
 
+        $shows = $this->getFile($url);
 
         $relevant_shows = array();
         foreach($shows as $series){
@@ -225,23 +274,50 @@ class TVMaze {
         return $relevant_shows;
     }
 
-    //Needs a people class
+    /*
+     *
+     * Gets an actor by his ID
+     *
+     */
     function getPersonByID($ID){
         $url = self::APIURL.'/people/'.$ID;
         $show = $this->getFile($url);
         return new Actor($show);
     }
 
+    /*
+     *
+     * Gets an array of all the shows a particular actor has been in
+     *
+     */
     function getCastCreditsByID($ID){
-        $url = self::APIURL.'/people/'.$ID.'/castcredits';
-        $show = $this->getFile($url);
-        return new TVShow($show);
+        $url = self::APIURL.'/people/'.$ID.'/castcredits?embed=show';
+        $castCredit = $this->getFile($url);
+
+        $shows_appeared = array();
+        foreach($castCredit as $series){
+            $TVShow = new TVShow($series['_embedded']['show']);
+            array_push($shows_appeared, $TVShow);
+        }
+        return $shows_appeared;
     }
 
+    /*
+     *
+     * Gets the position worked at the tv show in a tuple with the tvshow
+     *
+     */
     function getCrewCreditsByID($ID){
-        $url = self::APIURL.'/people/'.$ID.'/crewcredits';
-        $show = $this->getFile($url);
-        return new TVShow($show);
+        $url = self::APIURL.'/people/'.$ID.'/crewcredits?embed=show';
+        $crewCredit = $this->getFile($url);
+
+        $shows_appeared = array();
+        foreach($crewCredit as $series){
+            $position = $series['type'];
+            $TVShow = new TVShow($series['_embedded']['show']);
+            array_push($shows_appeared, array($position, $TVShow));
+        }
+        return $shows_appeared;
     }
 
     /*
@@ -259,9 +335,8 @@ class TVMaze {
 };
 
 $TVMaze = new TVMaze();
-$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/episodes');
-$relevant_shows = $TVMaze->searchEpisodesByShowID(1);
-
+$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/cast');
+//$relevant_shows = $TVMaze->getCrewCreditsByID(100);
 echo "<pre>";
 print_r($relevant_shows);
 echo "</pre>";

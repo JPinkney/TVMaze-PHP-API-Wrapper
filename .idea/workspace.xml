@@ -28,10 +28,10 @@
       <file leaf-file-name="TVMaze.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TVMaze.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.2736051" vertical-offset="1813" max-vertical-offset="4125">
-              <caret line="200" column="23" selection-start-line="200" selection-start-column="23" selection-end-line="200" selection-end-column="23" />
+            <state vertical-scroll-proportion="2.3197424" vertical-offset="853" max-vertical-offset="5250">
+              <caret line="201" column="0" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
               <folding>
-                <marker date="1442019654000" expanded="true" signature="7206:7247" placeholder="..." />
+                <marker date="1442023547000" expanded="true" signature="8915:8956" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -129,6 +129,9 @@
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0ea11af1-a66a-48c5-8bde-84dd6bc89d8e" name="Default" comment="" />
@@ -189,10 +192,10 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/TVMaze.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2736051" vertical-offset="1813" max-vertical-offset="4125">
-          <caret line="200" column="23" selection-start-line="200" selection-start-column="23" selection-end-line="200" selection-end-column="23" />
+        <state vertical-scroll-proportion="2.3197424" vertical-offset="853" max-vertical-offset="5250">
+          <caret line="201" column="0" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
           <folding>
-            <marker date="1442019654000" expanded="true" signature="7206:7247" placeholder="..." />
+            <marker date="1442023547000" expanded="true" signature="8915:8956" placeholder="..." />
           </folding>
         </state>
       </provider>
