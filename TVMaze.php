@@ -10,14 +10,8 @@ class Crew {
 
 };
 
-class Episode {
+class Episode extends TVProduction {
 
-    public $id;
-    public $url;
-    public $name;
-    public $images;
-    public $mediumImage;
-    public $originalImage;
     public $season;
     public $number;
     public $airdate;
@@ -27,12 +21,7 @@ class Episode {
     public $summary;
 
     function __construct($episode_data){
-        $this->id = $episode_data['id'];
-        $this->url = $episode_data['url'];
-        $this->name = $episode_data['name'];
-        $this->images = $episode_data['image'];
-        $this->mediumImage = $episode_data['medium'];
-        $this->originalImage = $episode_data['original'];
+        parent::__construct($episode_data);
         $this->season = $episode_data['season'];
         $this->number = $episode_data['number'];
         $this->airdate = $episode_data['airdate'];
@@ -44,7 +33,15 @@ class Episode {
 
 };
 
-class Actor {
+class Actor extends TVProduction {
+
+};
+
+class Character extends TVProduction {
+
+};
+
+class TVProduction {
 
     public $id;
     public $url;
@@ -53,27 +50,20 @@ class Actor {
     public $mediumImage;
     public $originalImage;
 
-
-    function __construct($actor_data){
-        $this->id = $actor_data['id'];
-        $this->url = $actor_data['url'];
-        $this->name = $actor_data['name'];
-        $this->images = $actor_data['image'];
-        $this->mediumImage = $actor_data['medium'];
-        $this->originalImage = $actor_data['original'];
+    function __construct($production_data){
+        $this->id = $production_data['id'];
+        $this->url = $production_data['url'];
+        $this->name = $production_data['name'];
+        $this->images = $production_data['image'];
+        $this->mediumImage = $production_data['medium'];
+        $this->originalImage = $production_data['original'];
     }
-
-};
-
-class Character extends Actor {
 
 }
 
-class TVShow {
+//Check back here if we can move the episode data to the episode class later
+class TVShow extends TVProduction{
 
-    public $id;
-    public $url;
-    public $name;
     public $type;
     public $language;
     public $genres;
@@ -86,17 +76,13 @@ class TVShow {
     public $network;
     public $webChannel;
     public $externalIDs;
-    public $images;
     public $summary;
     public $nextAirDate;
     public $airTime;
     public $airDay;
 
     function __construct($show_data){
-
-        $this->id = (int) $show_data['id'];
-        $this->url = $show_data['url'];
-        $this->name = $show_data['name'];
+        parent::__construct($show_data);
         $this->type = $show_data['type'];
         $this->language = $show_data['language'];
         $this->genres = $show_data['genres'];
@@ -109,7 +95,6 @@ class TVShow {
         $this->network = $show_data['network']['name'];
         $this->webChannel = $show_data['webChannel'];
         $this->externalIDs = $show_data['externals'];
-        $this->images = $show_data['image'];
         $this->summary = strip_tags($show_data['summary']);
 
         $current_date = date("Y-m-d");
@@ -186,7 +171,7 @@ class TVMaze {
      * site is the string of the website (either 'tvrage' or 'thetvdb') and the id is the id of the show on that respective site
      *
      */
-    function lookupByID($site, $ID){
+    function getShowBySiteID($site, $ID){
         $site = strtolower($site);
         $url = self::APIURL.'/lookup/shows?'.$site.'='.$ID;
         $show = $this->getFile($url);
@@ -198,26 +183,35 @@ class TVMaze {
      * Takes in an actors name and outputs their actor object
      *
      */
-    function searchByPerson($name){
+    function getPersonByName($name){
         $name = strtolower($name);
         $url = self::APIURL.'/search/people?q='.$name;
         $person = $this->getFile($url);
         return new Actor($person);
     }
 
-    function searchBySchedule($country=null, $date=null){
+    //this still needs to be done
+    function getSchedule($country=null, $date=null){
         if($country != null && $date != null){
             $url = self::APIURL.'/schedule?country='.$country.'&date='.$date;
         }else if($country == null && $date != null){
-            $url = self::APIURL.'/schedule';
+            $url = self::APIURL.'/schedule?date='.$date;
         }else if($country != null && $date == null){
-            $url = self::APIURL.'/schedule';
+            $url = self::APIURL.'/schedule?country='.$country;
         }else{
             $url = self::APIURL.'/schedule';
         }
 
         $schedule = $this->getFile($url);
 
+        $show_list = array();
+        foreach($schedule as $episode){
+            $ep = new Episode($episode);
+            $show = new TVShow($episode['show']);
+            array_push($show_list, $show, $ep);
+        }
+
+        return $show_list;
     }
 
     /*
@@ -225,7 +219,7 @@ class TVMaze {
      * Takes in a show ID and outputs the TVShow Object
      *
      */
-    function searchShowByShowID($ID, $embed_cast=null){
+    function getShowByShowID($ID, $embed_cast=null){
         if($embed_cast === true){
             $url = self::APIURL.'/shows/'.$ID.'?embed=cast';
         }else{
@@ -251,7 +245,7 @@ class TVMaze {
      * Takes in a show ID and outputs all the episode objects for that show in an array
      *
      */
-    function searchEpisodesByShowID($ID){
+    function getEpisodesByShowID($ID){
 
         $url = self::APIURL.'/shows/'.$ID.'/episodes';
 
@@ -290,7 +284,7 @@ class TVMaze {
      * Gets a list of all shows in the database. Page number is optional (caps display at 250 results)
      *
      */
-    function searchAllShowsByPage($page=null){
+    function getAllShowsByPage($page=null){
         if($page == null){
             $url = self::APIURL.'/shows';
         }else{
@@ -364,14 +358,14 @@ class TVMaze {
 
         return $shows;
     }
-    
+
 };
 
 $TVMaze = new TVMaze();
-$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/episodes?specials=1');
+$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/schedule');
 //$relevant_shows = $TVMaze->getCrewCreditsByID(100);
 echo "<pre>";
-print_r($relevant_shows);
+    print_r($relevant_shows);
 echo "</pre>";
 
 
