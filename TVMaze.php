@@ -1,5 +1,60 @@
 <?php
 
+class Episode {
+
+    public $id;
+    public $url;
+    public $name;
+    public $images;
+    public $mediumImage;
+    public $originalImage;
+    public $season;
+    public $number;
+    public $airdate;
+    public $airtime;
+    public $airstamp;
+    public $runtime;
+    public $summary;
+
+    function __construct($episode_data){
+        $this->id = $episode_data['id'];
+        $this->url = $episode_data['url'];
+        $this->name = $episode_data['name'];
+        $this->images = $episode_data['image'];
+        $this->mediumImage = $episode_data['medium'];
+        $this->originalImage = $episode_data['original'];
+        $this->season = $episode_data['season'];
+        $this->number = $episode_data['number'];
+        $this->airdate = $episode_data['airdate'];
+        $this->airtime = $episode_data['airtime'];
+        $this->airstamp = $episode_data['airstamp'];
+        $this->runtime = $episode_data['runtime'];
+        $this->summary = strip_tags($episode_data['summary']);
+    }
+
+};
+
+class Actor {
+
+    public $id;
+    public $url;
+    public $name;
+    public $images;
+    public $mediumImage;
+    public $originalImage;
+
+
+    function __construct($actor_data){
+        $this->id = $actor_data['id'];
+        $this->url = $actor_data['url'];
+        $this->name = $actor_data['name'];
+        $this->images = $actor_data['image'];
+        $this->mediumImage = $actor_data['medium'];
+        $this->originalImage = $actor_data['original'];
+    }
+
+};
+
 class TVShow {
 
     public $id;
@@ -55,6 +110,11 @@ class TVShow {
 
     }
 
+    /*
+     *
+     * This function is used to check whether or not the object contains any data
+     *
+     */
     function isEmpty(){
         return($this->id == null || $this->id == 0 && $this->url == null && $this->name == null);
     }
@@ -113,16 +173,11 @@ class TVMaze {
         return new TVShow($show);
     }
 
-    /*
-     *
-     * THIS FUNCTION IS NOT FULLY IMPLEMENTED YET. WE NEED TO MAKE A PERSON CLASS OR SOMETHING
-     *
-     */
     function searchByPerson($name){
         $name = strtolower($name);
         $url = self::APIURL.'/search/people?q='.$name;
-        $people = $this->getFile($url);
-        return $people;
+        $person = $this->getFile($url);
+        return new Actor($person);
     }
 
     function searchBySchedule($country, $date){
@@ -138,8 +193,15 @@ class TVMaze {
     //This has to be a new class of episodes
     function searchEpisodesByShowID($ID){
         $url = self::APIURL.'/shows/'.$ID.'/episodes';
-        $show = $this->getFile($url);
-        return new TVShow($show);
+        $episodes = $this->getFile($url);
+
+        $allEpisodes = array();
+        foreach($episodes as $episode){
+            $ep = new Episode($episode);
+            array_push($allEpisodes, $ep);
+        }
+
+        return $allEpisodes;
     }
 
     //This has to be a new class of cast
@@ -154,6 +216,7 @@ class TVMaze {
         $url = self::APIURL.'/shows?page'.$page;
         $shows = $this->getFile($url);
 
+
         $relevant_shows = array();
         foreach($shows as $series){
             $TVShow = new TVShow($series);
@@ -166,7 +229,7 @@ class TVMaze {
     function getPersonByID($ID){
         $url = self::APIURL.'/people/'.$ID;
         $show = $this->getFile($url);
-        return new TVShow($show);
+        return new Actor($show);
     }
 
     function getCastCreditsByID($ID){
@@ -186,7 +249,7 @@ class TVMaze {
      * Function used to get the data from the URL and return the results in an array
      *
      */
-    private function getFile($url){
+    public function getFile($url){
         $json = file_get_contents($url);
         $shows = json_decode($json, TRUE);
 
@@ -196,7 +259,8 @@ class TVMaze {
 };
 
 $TVMaze = new TVMaze();
-$relevant_shows = $TVMaze->lookupByID('TVRAGE', 24493);
+$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/episodes');
+$relevant_shows = $TVMaze->searchEpisodesByShowID(1);
 
 echo "<pre>";
 print_r($relevant_shows);
