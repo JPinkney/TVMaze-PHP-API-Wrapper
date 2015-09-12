@@ -164,15 +164,20 @@ class TVMaze {
      * Outputs array of the MOST related shows for that given name
      *
      */
-    function singleSearch($show_name, $modifier=null){
-        if($modifier == null){
-            $url = self::APIURL."/singlesearch/shows?q=".$show_name;
-        }else{
-            $url = self::APIURL."/singlesearch/shows?q=".$show_name.'&embed='.$modifier;
+    function singleSearch($show_name){
+
+        $url = self::APIURL."/singlesearch/shows?q=".$show_name.'&embed=episodes';
+        $shows = $this->getFile($url);
+
+        $episode_list = array();
+        foreach($shows['_embedded']['episodes'] as $episode){
+            $ep = new Episode($episode);
+            array_push($episode_list, $ep);
         }
 
-        $shows = $this->getFile($url);
-        return new TVShow($shows);
+        $TVShow = new TVShow($shows);
+
+        return array($TVShow, $episode_list);
     }
 
     /*
@@ -200,7 +205,18 @@ class TVMaze {
         return new Actor($person);
     }
 
-    function searchBySchedule($country, $date){
+    function searchBySchedule($country=null, $date=null){
+        if($country != null && $date != null){
+            $url = self::APIURL.'/schedule?country='.$country.'&date='.$date;
+        }else if($country == null && $date != null){
+            $url = self::APIURL.'/schedule';
+        }else if($country != null && $date == null){
+            $url = self::APIURL.'/schedule';
+        }else{
+            $url = self::APIURL.'/schedule';
+        }
+
+        $schedule = $this->getFile($url);
 
     }
 
@@ -209,10 +225,25 @@ class TVMaze {
      * Takes in a show ID and outputs the TVShow Object
      *
      */
-    function searchShowByShowID($ID){
-        $url = self::APIURL.'/shows/'.$ID;
+    function searchShowByShowID($ID, $embed_cast=null){
+        if($embed_cast === true){
+            $url = self::APIURL.'/shows/'.$ID.'?embed=cast';
+        }else{
+            $url = self::APIURL.'/shows/'.$ID;
+        }
+
         $show = $this->getFile($url);
-        return new TVShow($show);
+
+        $cast = array();
+        foreach($show['_embedded']['cast'] as $person){
+            $actor = new Actor($person['person']);
+            $character = new Character($person['character']);
+            array_push($cast, array($actor, $character));
+        }
+
+        $TVShow = new TVShow($show);
+
+        return $embed_cast === true ? array($TVShow, $cast) : array($TVShow);
     }
 
     /*
@@ -221,7 +252,9 @@ class TVMaze {
      *
      */
     function searchEpisodesByShowID($ID){
+
         $url = self::APIURL.'/shows/'.$ID.'/episodes';
+
         $episodes = $this->getFile($url);
 
         $allEpisodes = array();
@@ -331,11 +364,11 @@ class TVMaze {
 
         return $shows;
     }
-
+    
 };
 
 $TVMaze = new TVMaze();
-$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/cast');
+$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/shows/1/episodes?specials=1');
 //$relevant_shows = $TVMaze->getCrewCreditsByID(100);
 echo "<pre>";
 print_r($relevant_shows);
