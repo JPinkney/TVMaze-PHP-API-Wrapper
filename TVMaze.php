@@ -2,8 +2,6 @@
 
 class Crew {
 
-    public $type;
-
     function __construct($crew_data){
         $this->type = $crew_data['type'];
     }
@@ -11,14 +9,6 @@ class Crew {
 };
 
 class Episode extends TVProduction {
-
-    public $season;
-    public $number;
-    public $airdate;
-    public $airtime;
-    public $airstamp;
-    public $runtime;
-    public $summary;
 
     function __construct($episode_data){
         parent::__construct($episode_data);
@@ -43,43 +33,19 @@ class Character extends TVProduction {
 
 class TVProduction {
 
-    public $id;
-    public $url;
-    public $name;
-    public $images;
-    public $mediumImage;
-    public $originalImage;
-
     function __construct($production_data){
         $this->id = $production_data['id'];
         $this->url = $production_data['url'];
         $this->name = $production_data['name'];
         $this->images = $production_data['image'];
-        $this->mediumImage = $production_data['medium'];
-        $this->originalImage = $production_data['original'];
+        $this->mediumImage = $production_data['image']['medium'];
+        $this->originalImage = $production_data['image']['original'];
     }
 
-}
+};
 
 //Check back here if we can move the episode data to the episode class later
 class TVShow extends TVProduction{
-
-    public $type;
-    public $language;
-    public $genres;
-    public $status;
-    public $runtime;
-    public $premiered;
-    public $rating;
-    public $weight;
-    public $network_array;
-    public $network;
-    public $webChannel;
-    public $externalIDs;
-    public $summary;
-    public $nextAirDate;
-    public $airTime;
-    public $airDay;
 
     function __construct($show_data){
         parent::__construct($show_data);
@@ -175,6 +141,11 @@ class TVMaze {
         $site = strtolower($site);
         $url = self::APIURL.'/lookup/shows?'.$site.'='.$ID;
         $show = $this->getFile($url);
+
+        echo "<pre>";
+            print_r($show);
+        echo "</pre>";
+
         return new TVShow($show);
     }
 
@@ -187,7 +158,13 @@ class TVMaze {
         $name = strtolower($name);
         $url = self::APIURL.'/search/people?q='.$name;
         $person = $this->getFile($url);
-        return new Actor($person);
+
+        $people = array();
+        foreach($person as $peeps){
+            array_push($people, new Actor($peeps['person']));
+        }
+
+        return $people;
     }
 
     //this still needs to be done
@@ -352,7 +329,7 @@ class TVMaze {
      * Function used to get the data from the URL and return the results in an array
      *
      */
-    public function getFile($url){
+    private function getFile($url){
         $json = file_get_contents($url);
         $shows = json_decode($json, TRUE);
 
@@ -362,8 +339,8 @@ class TVMaze {
 };
 
 $TVMaze = new TVMaze();
-$relevant_shows = $TVMaze->getFile('http://api.tvmaze.com/schedule');
-//$relevant_shows = $TVMaze->getCrewCreditsByID(100);
+//$relevant_shows = $TVMaze->getCastCreditsByID(100);
+$relevant_shows = $TVMaze->getCastCreditsByID(1);
 echo "<pre>";
     print_r($relevant_shows);
 echo "</pre>";
