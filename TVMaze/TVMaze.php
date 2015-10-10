@@ -1,91 +1,5 @@
 <?php
 
-class Crew {
-
-    function __construct($crew_data){
-        $this->type = $crew_data['type'];
-    }
-
-};
-
-class Episode extends TVProduction {
-
-    function __construct($episode_data){
-        parent::__construct($episode_data);
-        $this->season = $episode_data['season'];
-        $this->number = $episode_data['number'];
-        $this->airdate = $episode_data['airdate'];
-        $this->airtime = $episode_data['airtime'];
-        $this->airstamp = $episode_data['airstamp'];
-        $this->runtime = $episode_data['runtime'];
-        $this->summary = strip_tags($episode_data['summary']);
-    }
-
-};
-
-class Actor extends TVProduction {
-
-};
-
-class Character extends TVProduction {
-
-};
-
-class TVProduction {
-
-    function __construct($production_data){
-        $this->id = $production_data['id'];
-        $this->url = $production_data['url'];
-        $this->name = $production_data['name'];
-        $this->images = $production_data['image'];
-        $this->mediumImage = $production_data['image']['medium'];
-        $this->originalImage = $production_data['image']['original'];
-    }
-
-};
-
-//Check back here if we can move the episode data to the episode class later
-class TVShow extends TVProduction{
-
-    function __construct($show_data){
-        parent::__construct($show_data);
-        $this->type = $show_data['type'];
-        $this->language = $show_data['language'];
-        $this->genres = $show_data['genres'];
-        $this->status = $show_data['status'];
-        $this->runtime = $show_data['runtime'];
-        $this->premiered = $show_data['premiered'];
-        $this->rating = $show_data['rating'];
-        $this->weight = $show_data['weight'];
-        $this->network_array = $show_data['network'];
-        $this->network = $show_data['network']['name'];
-        $this->webChannel = $show_data['webChannel'];
-        $this->externalIDs = $show_data['externals'];
-        $this->summary = strip_tags($show_data['summary']);
-
-        $current_date = date("Y-m-d");
-        foreach($show_data['_embedded']['episodes'] as $episode){
-            if($episode['airdate'] >= $current_date){
-                $this->nextAirDate = $episode['airdate'];
-                $this->airTime = date("g:i A", $episode['airtime']);
-                $this->airDay =  date('l', strtotime($episode['airdate']));
-                break;
-            }
-        }
-
-    }
-
-    /*
-     *
-     * This function is used to check whether or not the object contains any data
-     *
-     */
-    function isEmpty(){
-        return($this->id == null || $this->id == 0 && $this->url == null && $this->name == null);
-    }
-
-};
-
 class TVMaze {
 
     CONST APIURL = 'http://api.tvmaze.com';
@@ -120,9 +34,15 @@ class TVMaze {
         $url = self::APIURL."/singlesearch/shows?q=".$show_name.'&embed=episodes';
         $shows = $this->getFile($url);
 
+        echo "<pre>";
+            print_r($shows['_embedded']['episodes']);
+        echo "</pre>";
+
+
         $episode_list = array();
         foreach($shows['_embedded']['episodes'] as $episode){
             $ep = new Episode($episode);
+            print_r($episode);
             array_push($episode_list, $ep);
         }
 
@@ -337,13 +257,6 @@ class TVMaze {
     }
 
 };
-
-$TVMaze = new TVMaze();
-//$relevant_shows = $TVMaze->getCastCreditsByID(100);
-$relevant_shows = $TVMaze->getCastCreditsByID(1);
-echo "<pre>";
-    print_r($relevant_shows);
-echo "</pre>";
 
 
 ?>
