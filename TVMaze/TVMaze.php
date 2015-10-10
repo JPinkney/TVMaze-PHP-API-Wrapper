@@ -34,11 +34,6 @@ class TVMaze {
         $url = self::APIURL."/singlesearch/shows?q=".$show_name.'&embed=episodes';
         $shows = $this->getFile($url);
 
-        echo "<pre>";
-            print_r($shows['_embedded']['episodes']);
-        echo "</pre>";
-
-
         $episode_list = array();
         foreach($shows['_embedded']['episodes'] as $episode){
             $ep = new Episode($episode);
@@ -61,10 +56,6 @@ class TVMaze {
         $site = strtolower($site);
         $url = self::APIURL.'/lookup/shows?'.$site.'='.$ID;
         $show = $this->getFile($url);
-
-        echo "<pre>";
-            print_r($show);
-        echo "</pre>";
 
         return new TVShow($show);
     }
