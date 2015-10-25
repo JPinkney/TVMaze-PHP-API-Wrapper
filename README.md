@@ -38,3 +38,9 @@ getPersonByID -> Return an actor given their ID
 getCastCreditsByID -> Return an array of all the shows a particular actor has been in given their ID
 
 getCrewCreditsByID -> Return an array of all the positions a particular actor has been in given their ID
+
+Open Source Projects using this
+-------------------------------
+nZEDb
+Website Link: http://www.nzedb.com 
+Github Link: https://github.com/nZEDb/nZEDb
