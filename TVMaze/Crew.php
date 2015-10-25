@@ -5,10 +5,25 @@
  * Time: 2:12 PM
  */
 
+namespace JPinkney\TVMaze;
+
+/**
+ * Class Crew
+ *
+ * @package JPinkney\TVMaze
+ */
 class Crew {
 
-    function __construct($crew_data){
-        $this->type = $crew_data['type'];
-    }
+	/**
+	 * @var
+	 */
+	public $type;
+
+	/**
+	 * @param $crew_data
+	 */
+	function __construct($crew_data){
+		$this->type = $crew_data['type'];
+	}
 
 };
