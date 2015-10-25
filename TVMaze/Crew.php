@@ -15,15 +15,15 @@ namespace JPinkney\TVMaze;
 class Crew {
 
 	/**
-     * @var
-     */
-    public $type;
+	 * @var
+	 */
+	public $type;
 
-    /**
-     * @param $crew_data
-     */
-    function __construct($crew_data){
-        $this->type = $crew_data['type'];
-    }
+	/**
+	 * @param $crew_data
+	 */
+	function __construct($crew_data){
+		$this->type = $crew_data['type'];
+	}
 
 };

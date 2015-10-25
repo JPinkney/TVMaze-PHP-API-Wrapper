@@ -1,6 +1,11 @@
 <?php
+/**
+ * User: jpinkney
+ * Date: 9/15/15
+ * Time: 2:15 PM
+ */
 
-namespace JPinkney;
+require_once 'TVMazeIncludes.php';
 
 /*
  *
@@ -11,7 +16,8 @@ namespace JPinkney;
 /*
  * Create a new TVMaze Object called TVMaze that will allow us to access all the api's functionality
  */
-$Client = new Client;
+
+$Client = new JPinkney\Client;
 
 /*
  * List of some methods that you can use. Others will be included in more formal documentation
@@ -19,5 +25,3 @@ $Client = new Client;
 $Client->TVMaze->search("Arrow");
 $Client->TVMaze->singleSearch("The Walking Dead");
 $Client->TVMaze->getShowBySiteID("TVRage", 33272);
-
-?>
