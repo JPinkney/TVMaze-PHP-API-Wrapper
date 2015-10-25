@@ -6,6 +6,8 @@
  * Time: 2:16 PM
  */
 
+namespace JPinkney\TVMaze;
+
 //Check back here if we can move the episode data to the episode class later
 class TVShow extends TVProduction{
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace JPinkney\TVMaze;
+
 class TVMaze {
 
     CONST APIURL = 'http://api.tvmaze.com';

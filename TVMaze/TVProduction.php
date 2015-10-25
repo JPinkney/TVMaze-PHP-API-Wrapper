@@ -5,6 +5,8 @@
  * Time: 2:16 PM
  */
 
+namespace JPinkney\TVMaze;
+
 class TVProduction {
 
     function __construct($production_data){

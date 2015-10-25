@@ -1,23 +1,23 @@
 <?php
 
+namespace JPinkney;
+
 /*
  *
  * This always need to be required when using this API
- * 
+ *
  */
-require 'TVMazeIncludes.php';
-
 
 /*
  * Create a new TVMaze Object called TVMaze that will allow us to access all the api's functionality
  */
-$TVMaze = new TVMaze;
+$Client = new Client;
 
 /*
  * List of some methods that you can use. Others will be included in more formal documentation
  */
-$TVMaze->search("Arrow");
-$TVMaze->singleSearch("The Walking Dead");
-$TVMaze->getShowBySiteID("TVRage", 33272);
+$Client->TVMaze->search("Arrow");
+$Client->TVMaze->singleSearch("The Walking Dead");
+$Client->TVMaze->getShowBySiteID("TVRage", 33272);
 
 ?>

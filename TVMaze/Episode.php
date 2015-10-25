@@ -6,8 +6,47 @@
  * Time: 2:13 PM
  */
 
+namespace JPinkney\TVMaze;
+
+/**
+ * Class Episode
+ *
+ * @package JPinkney\TVMaze
+ */
 class Episode extends TVProduction {
 
+	/**
+     * @var
+     */
+    public $season;
+	/**
+     * @var
+     */
+    public $number;
+	/**
+     * @var
+     */
+    public $airdate;
+	/**
+     * @var
+     */
+    public $airtime;
+	/**
+     * @var
+     */
+    public $airstamp;
+	/**
+     * @var
+     */
+    public $runtime;
+	/**
+     * @var string
+     */
+    public $summary;
+
+	/**
+     * @param $episode_data
+     */
     function __construct($episode_data){
         parent::__construct($episode_data);
         $this->season = $episode_data['season'];
