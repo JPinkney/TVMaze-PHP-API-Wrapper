@@ -38,7 +38,7 @@ Supported Methods:
    function getCastByShowID -> Return the cast for a show given the show ID
 ```
 ```php
-   function getAllShowsByPage -> Return a master list of TVMaze\'s shows given the page number
+   function getAllShowsByPage -> Return a master list of TVMazes shows given the page number
 ```
 ```php
    function getPersonByID -> Return an actor given their ID
