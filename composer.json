@@ -1,0 +1,17 @@
+{
+    "name": "joshpinkney/tv-maze-php-api",
+    "description": "TVMaze-API-Wrapper",
+    "authors": [
+        {
+            "name": "Josh Pinkney",
+            "email": "Joshpinkney@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "JPinkney": ""
+        }
+    }
+}
