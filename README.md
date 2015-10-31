@@ -44,10 +44,10 @@ Supported Methods:
    function getPersonByID -> Return an actor given their ID
 ```
 ```php
-   function getCastCreditsByID -> Return an array of all the shows a particular actor has been in given their ID
+   function getCastCreditsByID -> Return an array of all the shows a particular actor has been in
 ```
 ```php
-   function getCrewCreditsByID -> Return an array of all the positions a particular actor has been in given their ID
+   function getCrewCreditsByID -> Return an array of all the positions a particular actor has been in
 ```
 
 ### Open Source Projects using this
