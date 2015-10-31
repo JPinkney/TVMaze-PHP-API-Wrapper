@@ -26,7 +26,7 @@ Supported Methods:
    function getPersonByName -> Return all possible actors relating to the given input
 ```
 ```php
-   function getSchedule (In progess) -> Return all the shows in the given country and/or date
+   function getSchedule -> Return all the shows in the given country and/or date
 ```
 ```php
    function getShowByShowID -> Return all information about a show given the show ID
