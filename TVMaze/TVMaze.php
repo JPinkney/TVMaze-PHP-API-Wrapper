@@ -43,7 +43,6 @@ class TVMaze {
 		$episode_list = array();
 		foreach($shows['_embedded']['episodes'] as $episode){
 			$ep = new Episode($episode);
-			print_r($episode);
 			array_push($episode_list, $ep);
 		}
 
