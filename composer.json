@@ -7,7 +7,7 @@
             "email": "Joshpinkney@gmail.com"
         }
     ],
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-0": {
