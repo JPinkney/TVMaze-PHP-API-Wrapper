@@ -7,9 +7,8 @@
             "email": "Joshpinkney@gmail.com"
         }
     ],
+    "require": { "joshpinkney/tv-maze-php-api" : "dev-master" },
     "minimum-stability": "dev",
-    "prefer-stable": "true",
-    "require": {},
     "autoload": {
         "psr-0": {
             "JPinkney": ""
