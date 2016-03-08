@@ -53,3 +53,4 @@ Supported Methods:
 ### Open Source Projects using this
 
  * [nZEDb](https://github.com/nZEDb/nZEDb) Website Link: http://www.nzedb.com/
+ * [newznab-tmux](https://github.com/DariusIII/newznab-tmux)
