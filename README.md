@@ -7,10 +7,6 @@ Goal
  * The goal of this API Wrapper is to turn TVMaze's endpoints into something more object orientated and readable
  * Provide a simple, open source project that anybody can contribute to
 
-Pre-reqs
-
- * Before attempting to use this wrapper make sure you require 'TVMazeIncludes.php'; at the top of your php file.
-
 Supported Methods:
 
 ```php
