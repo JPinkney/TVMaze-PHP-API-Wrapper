@@ -6,13 +6,11 @@
  * Time: 2:15 PM
  */
 
-namespace JPinkney;
+namespace JPinkney\TVMaze;
 
 /**
  * This is the file that you are going to include in each of your new projects
  */
-
-use JPinkney\TVMaze\TVMaze;
 
 /* - Enable these when desired and pass options through __construct
 use JPinkney\TVMaze\TVProduction;
@@ -27,7 +25,7 @@ use JPinkney\TVMaze\AKA;
 /**
  * Class Client
  *
- * @package JPinkney
+ * @package JPinkney\TVMaze
  */
 class Client
 {
