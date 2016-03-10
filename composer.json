@@ -1,5 +1,7 @@
 {
     "name": "joshpinkney/tv-maze-php-api",
+    "type": "library",
+    "license": "MIT",
     "description": "TVMaze-API-Wrapper",
     "authors": [
         {
@@ -7,5 +9,9 @@
             "email": "Joshpinkney@gmail.com"
         }
     ],
-    "license": "MIT"
+    "autoload": {
+        "psr-0": {
+            "JPinkney": ""
+        }
+    }
 }
