@@ -21,6 +21,7 @@ use JPinkney\TVMaze\Actor;
 use JPinkney\TVMaze\Character;
 use JPinkney\TVMaze\Crew;
 use JPinkney\TVMaze\Episode;
+use JPinkney\TVMaze\AKA;
 */
 
 /**
