@@ -34,14 +34,8 @@ class Client
 	 */
 	public $TVMaze;
 
-	/**
-	 * @param array $options
-	 */
-	public function __construct($options = array())
+	public function __construct()
 	{
-		$defaults = [];
-		$options += $defaults;
-
 		$this->TVMaze = new TVMaze();
 	}
 }
