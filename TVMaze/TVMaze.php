@@ -192,6 +192,49 @@ class TVMaze {
 
 		return $allEpisodes;
 	}
+	
+	/**
+	 * Returns a single episodes information by its show ID, season and episode numbers
+	 *
+	 * @param $ID
+	 * @param $season
+	 * @param $episode
+	 *
+	 * @return Episode|mixed
+	 */
+	function getEpisodeByNumber($ID, $season, $episode)
+	{
+		$ep = false;
+		$url = self::APIURL . '/shows/' . $ID . '/episodebynumber?season='. $season . '&number=' . $episode;
+		$response = $this->getFile($url);
+		if (is_array($response)) {
+			$ep = new Episode($response);
+		}
+		return $ep;
+	}
+
+	/**
+	 * Returns episodes for a given show ID and ISO 8601 airdate
+	 *
+	 * @param $ID
+	 * @param $airdate
+	 *
+	 * @return Episode|mixed
+	 */
+	function getEpisodesByAirdate($ID, $airdate)
+	{
+		$url = self::APIURL . '/shows/' . $ID . '/episodesbydate?date=' . date('Y-m-d', strtotime($airdate));
+		$episodes = $this->getFile($url);
+
+		$allEpisodes = array();
+		if (is_array($episodes)) {
+			foreach ($episodes as $episode) {
+				$ep = new Episode($episode);
+				array_push($allEpisodes, $ep);
+			}
+		}
+		return $allEpisodes;
+	}
 
 	/**
 	 * Takes in a show ID and outputs all of the cast members in the form (actor, character)
