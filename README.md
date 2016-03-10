@@ -50,6 +50,9 @@ Supported Methods:
    function getCrewCreditsByID -> Return an array of all the positions a particular actor has been in
 ```
 
+### Installing VIA Composer
+* composer require joshpinkney/tv-maze-php-api dev-master
+
 ### Open Source Projects using this
 
  * [nZEDb](https://github.com/nZEDb/nZEDb) Website Link: http://www.nzedb.com/
