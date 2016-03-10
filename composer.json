@@ -7,16 +7,6 @@
             "email": "Joshpinkney@gmail.com"
         }
     ],
-    "require": { 
-        "joshpinkney/tv-maze-php-api" : "dev-master"
-    },
-    "require-dev": { 
-        "joshpinkney/tv-maze-php-api" : "dev-master"
-    },
     "minimum-stability": "dev",
-    "autoload": {
-        "psr-0": {
-            "JPinkney": ""
-        }
-    }
+    "license": "MIT"
 }
