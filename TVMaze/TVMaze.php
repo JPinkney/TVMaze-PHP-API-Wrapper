@@ -52,6 +52,26 @@ class TVMaze {
 	}
 
 	/**
+	 * Takes in a show name with optional modifiers (akas)
+	 * Outputs array of the MOST related show for that given name
+	 *
+	 * @param $show_name
+	 *
+	 * @return array
+	 */
+	function singleSearchAkas($show_name)
+	{
+		$TVShow = false;
+		$url = self::APIURL . "/singlesearch/shows?q=" . rawurlencode($show_name) . '&embed=akas';
+		$shows = $this->getFile($url);
+
+		if (is_array($shows)) {
+			$TVShow = new TVShow($shows);
+		}
+		return array($TVShow);
+	}
+
+	/**
 	 * Allows show lookup by using TVRage or TheTVDB ID
 	 * site is the string of the website (either 'tvrage' or 'thetvdb') and the id is the id of the show on that respective site
 	 *
@@ -192,7 +212,7 @@ class TVMaze {
 
 		return $allEpisodes;
 	}
-	
+
 	/**
 	 * Returns a single episodes information by its show ID, season and episode numbers
 	 *
