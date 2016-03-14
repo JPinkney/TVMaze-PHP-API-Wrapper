@@ -20,66 +20,91 @@ class TVShow extends TVProduction{
 	 * @var
 	 */
 	public $type;
+
 	/**
 	 * @var
 	 */
 	public $language;
+
 	/**
 	 * @var
 	 */
 	public $genres;
+
 	/**
 	 * @var
 	 */
 	public $status;
+
 	/**
 	 * @var
 	 */
 	public $runtime;
+
 	/**
 	 * @var
 	 */
 	public $premiered;
+
 	/**
 	 * @var
 	 */
 	public $rating;
+
 	/**
 	 * @var
 	 */
 	public $weight;
+
 	/**
 	 * @var
 	 */
 	public $network_array;
+
 	/**
 	 * @var
 	 */
 	public $network;
+
 	/**
 	 * @var
 	 */
 	public $webChannel;
+
 	/**
 	 * @var
 	 */
 	public $externalIDs;
+
 	/**
 	 * @var string
 	 */
 	public $summary;
+
 	/**
 	 * @var
 	 */
 	public $nextAirDate;
+
 	/**
 	 * @var bool|string
 	 */
 	public $airTime;
+
 	/**
 	 * @var bool|string
 	 */
 	public $airDay;
+
+	/**
+	 * @var
+	 */
+	public $akas;
+
+	/**
+	 * @var
+	 */
+	public $country;
 
 	/**
 	 * @param $show_data
@@ -97,8 +122,13 @@ class TVShow extends TVProduction{
 		$this->network_array = $show_data['network'];
 		$this->network = $show_data['network']['name'];
 		$this->webChannel = $show_data['webChannel'];
+		$this->country = $show_data['network']['country']['code'];
+		if (count($show_data['webChannel']) > 0) {
+			$this->country = $show_data['webChannel']['country']['code'];
+		}
 		$this->externalIDs = $show_data['externals'];
 		$this->summary = strip_tags($show_data['summary']);
+		$this->akas = (isset($show_data['_embedded']['akas']) ? $show_data['_embedded']['akas'] : null);
 
 		$current_date = date("Y-m-d");
 		foreach($show_data['_embedded']['episodes'] as $episode){
@@ -112,12 +142,8 @@ class TVShow extends TVProduction{
 
 	}
 
-	/*
-	 *
-	 * This function is used to check whether or not the object contains any data
-	 *
-	 */
 	/**
+	 * @note This function is used to check whether or not the object contains any data
 	 * @return bool
 	 */
 	function isEmpty(){
