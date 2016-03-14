@@ -14,15 +14,19 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function search($show_name){
+	function search($show_name)
+	{
+		$relevant_shows = false;
 		$url = self::APIURL."/search/shows?q=" . rawurlencode($show_name);
 
 		$shows = $this->getFile($url);
 
-		$relevant_shows = array();
-		foreach($shows as $series){
-			$TVShow = new TVShow($series['show']);
-			array_push($relevant_shows, $TVShow);
+		if (is_array($shows)) {
+			$relevant_shows = array();
+			foreach ($shows as $series) {
+				$TVShow = new TVShow($series['show']);
+				array_push($relevant_shows, $TVShow);
+			}
 		}
 		return $relevant_shows;
 	}
@@ -360,11 +364,22 @@ class TVMaze {
 	 *
 	 * @return mixed
 	 */
-	private function getFile($url){
-		$json = file_get_contents($url);
-		$shows = json_decode($json, TRUE);
+	private function getFile($url)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$result = curl_exec($ch);
+		curl_close($ch);
 
-		return $shows;
+		$response = json_decode($result, TRUE);
+		if (is_array($response) && count($response) > 0 && (!isset($response['status']) || $response['status'] != '404')) {
+			return $response;
+		} else {
+			return false;
+		}
 	}
 
 };
