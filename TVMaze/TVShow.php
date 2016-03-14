@@ -82,6 +82,11 @@ class TVShow extends TVProduction{
 	public $airDay;
 
 	/**
+	 * @var
+	 */
+	public $akas;
+
+	/**
 	 * @param $show_data
 	 */
 	function __construct($show_data){
@@ -99,6 +104,7 @@ class TVShow extends TVProduction{
 		$this->webChannel = $show_data['webChannel'];
 		$this->externalIDs = $show_data['externals'];
 		$this->summary = strip_tags($show_data['summary']);
+		$this->akas = (isset($show_data['_embedded']['akas']) ? $show_data['_embedded']['akas'] : null);
 
 		$current_date = date("Y-m-d");
 		foreach($show_data['_embedded']['episodes'] as $episode){
