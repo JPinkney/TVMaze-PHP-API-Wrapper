@@ -118,12 +118,8 @@ class TVShow extends TVProduction{
 
 	}
 
-	/*
-	 *
-	 * This function is used to check whether or not the object contains any data
-	 *
-	 */
 	/**
+	 * @note This function is used to check whether or not the object contains any data
 	 * @return bool
 	 */
 	function isEmpty(){
