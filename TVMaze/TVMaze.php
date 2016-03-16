@@ -22,10 +22,10 @@ class TVMaze {
 		$shows = $this->getFile($url);
 
 		if (is_array($shows)) {
-			$relevant_shows = array();
+			$relevant_shows = [];
 			foreach ($shows as $series) {
 				$TVShow = new TVShow($series['show']);
-				array_push($relevant_shows, $TVShow);
+				$relevant_shows[] = $TVShow;
 			}
 		}
 		return $relevant_shows;
@@ -44,15 +44,15 @@ class TVMaze {
 		$url = self::APIURL."/singlesearch/shows?q=" . rawurlencode($show_name) . '&embed=episodes';
 		$shows = $this->getFile($url);
 
-		$episode_list = array();
+		$episode_list = [];
 		foreach($shows['_embedded']['episodes'] as $episode){
 			$ep = new Episode($episode);
-			array_push($episode_list, $ep);
+			$episode_list[] = $ep;
 		}
 
 		$TVShow = new TVShow($shows);
 
-		return array($TVShow, $episode_list);
+		return [$TVShow, $episode_list];
 	}
 
 	/**
@@ -72,7 +72,7 @@ class TVMaze {
 		if (is_array($shows)) {
 			$TVShow = new TVShow($shows);
 		}
-		return array($TVShow);
+		return [$TVShow];
 	}
 
 	/**
@@ -104,9 +104,9 @@ class TVMaze {
 		$url = self::APIURL.'/search/people?q='.$name;
 		$person = $this->getFile($url);
 
-		$people = array();
+		$people = [];
 		foreach($person as $peeps){
-		array_push($people, new Actor($peeps['person']));
+		$people[] = new Actor($peeps['person']);
 		}
 
 		return $people;
@@ -120,20 +120,20 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getSchedule($country=null, $date=null){
-		if($country != null && $date != null){
+	function getSchedule($country = null, $date = null){
+		if($country != null && $date != null) {
 			$url = self::APIURL . '/schedule?country=' . $country .'&date='. $date;
-		}else if($country == null && $date != null){
+		} else if($country == null && $date != null){
 			$url = self::APIURL . '/schedule?date=' . $date;
-		}else if($country != null && $date == null){
+		} else if($country != null && $date == null){
 			$url = self::APIURL . '/schedule?country=' . $country;
-		}else{
+		} else{
 			$url = self::APIURL . '/schedule';
 		}
 
 		$schedule = $this->getFile($url);
 
-		$show_list = array();
+		$show_list = [];
 		foreach($schedule as $episode){
 			$ep = new Episode($episode);
 			$show = new TVShow($episode['show']);
@@ -160,16 +160,16 @@ class TVMaze {
 
 		$show = $this->getFile($url);
 
-		$cast = array();
+		$cast = [];
 		foreach($show['_embedded']['cast'] as $person){
 			$actor = new Actor($person['person']);
 			$character = new Character($person['character']);
-			array_push($cast, array($actor, $character));
+			array_push($cast, [$actor, $character]);
 		}
 
 		$TVShow = new TVShow($show);
 
-		return $embed_cast === true ? array($TVShow, $cast) : array($TVShow);
+		return $embed_cast === true ? [$TVShow, $cast] : [$TVShow];
 	}
 
 	/**
@@ -208,10 +208,10 @@ class TVMaze {
 
 		$episodes = $this->getFile($url);
 
-		$allEpisodes = array();
+		$allEpisodes = [];
 		foreach($episodes as $episode){
 			$ep = new Episode($episode);
-			array_push($allEpisodes, $ep);
+			$allEpisodes[] = $ep;
 		}
 
 		return $allEpisodes;
@@ -250,11 +250,11 @@ class TVMaze {
 		$url = self::APIURL . '/shows/' . $ID . '/episodesbydate?date=' . date('Y-m-d', strtotime($airdate));
 		$episodes = $this->getFile($url);
 
-		$allEpisodes = array();
+		$allEpisodes = [];
 		if (is_array($episodes)) {
 			foreach ($episodes as $episode) {
 				$ep = new Episode($episode);
-				array_push($allEpisodes, $ep);
+				$allEpisodes[] = $ep;
 			}
 		}
 		return $allEpisodes;
@@ -271,11 +271,11 @@ class TVMaze {
 		$url = self::APIURL.'/shows/'.$ID.'/cast';
 		$people = $this->getFile($url);
 
-		$cast = array();
+		$cast = [];
 		foreach($people as $person){
 			$actor = new Actor($person['person']);
 			$character = new Character($person['character']);
-			array_push($cast, array($actor, $character));
+			array_push($cast, [$actor, $character]);
 		}
 
 		return $cast;
@@ -297,10 +297,10 @@ class TVMaze {
 
 		$shows = $this->getFile($url);
 
-		$relevant_shows = array();
+		$relevant_shows = [];
 		foreach($shows as $series){
 			$TVShow = new TVShow($series);
-			array_push($relevant_shows, $TVShow);
+			$relevant_shows[] = $TVShow;
 		}
 		return $relevant_shows;
 	}
@@ -329,10 +329,10 @@ class TVMaze {
 		$url = self::APIURL.'/people/'.$ID.'/castcredits?embed=show';
 		$castCredit = $this->getFile($url);
 
-		$shows_appeared = array();
+		$shows_appeared = [];
 		foreach($castCredit as $series){
 			$TVShow = new TVShow($series['_embedded']['show']);
-			array_push($shows_appeared, $TVShow);
+			$shows_appeared[] = $TVShow;
 		}
 		return $shows_appeared;
 	}
@@ -348,11 +348,11 @@ class TVMaze {
 		$url = self::APIURL.'/people/'.$ID.'/crewcredits?embed=show';
 		$crewCredit = $this->getFile($url);
 
-		$shows_appeared = array();
+		$shows_appeared = [];
 		foreach($crewCredit as $series){
 			$position = $series['type'];
 			$TVShow = new TVShow($series['_embedded']['show']);
-			array_push($shows_appeared, array($position, $TVShow));
+			array_push($shows_appeared, [$position, $TVShow]);
 		}
 		return $shows_appeared;
 	}
