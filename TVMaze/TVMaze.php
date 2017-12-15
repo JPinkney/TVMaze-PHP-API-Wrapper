@@ -4,7 +4,7 @@ namespace JPinkney\TVMaze;
 
 class TVMaze {
 
-	CONST APIURL = 'http://api.tvmaze.com';
+	CONST APIURL = 'https://api.tvmaze.com';
 
 	/**
 	 * Takes in a show name
