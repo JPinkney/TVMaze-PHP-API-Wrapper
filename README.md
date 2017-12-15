@@ -2,52 +2,64 @@
 
 An easier way to interact with TVMaze's endpoints. Developed in PHP.
 
-Goal
+### Installing VIA Composer
+* composer require joshpinkney/tv-maze-php-api dev-master
 
+### Goal
  * The goal of this API Wrapper is to turn TVMaze's endpoints into something more object orientated and readable
  * Provide a simple, open source project that anybody can contribute to
 
-Supported Methods:
+Supported Methods with full example below. Simple example found in Examples.php.
 
 ```php
-   function search -> Return all tv shows relating to the given input
-```
-```php
-   function singleSearch -> Return the most relevant tv show to the given input
-```
-```php
-   function getShowBySiteID -> Allows show lookup by using TVRage or TheTVDB ID
-```
-```php
-   function getPersonByName -> Return all possible actors relating to the given input
-```
-```php
-   function getSchedule -> Return all the shows in the given country and/or date
-```
-```php
-   function getShowByShowID -> Return all information about a show given the show ID
-```
-```php
-   function getEpisodesByShowID -> Return all episodes for a show given the show ID
-```
-```php
-   function getCastByShowID -> Return the cast for a show given the show ID
-```
-```php
-   function getAllShowsByPage -> Return a master list of TVMazes shows given the page number
-```
-```php
-   function getPersonByID -> Return an actor given their ID
-```
-```php
-   function getCastCreditsByID -> Return an array of all the shows a particular actor has been in
-```
-```php
-   function getCrewCreditsByID -> Return an array of all the positions a particular actor has been in
-```
+<?php
 
-### Installing VIA Composer
-* composer require joshpinkney/tv-maze-php-api dev-master
+    require_once "TVMazeIncludes.php";
+
+    $Client = new JPinkney\TVMaze\Client;
+    
+    /*
+     * List of simple ways you can interact with the api
+     */
+     
+    //Return all tv shows relating to the given input
+    $Client->TVMaze->search("Arrow");
+    
+    //Return the most relevant tv show to the given input
+    $Client->TVMaze->singleSearch("The Walking Dead");
+    
+    //Allows show lookup by using TVRage or TheTVDB ID
+    $Client->TVMaze->getShowBySiteID("TVRage", 33272);
+
+    //Return all possible actors relating to the given input
+    $Client->TVMaze->getPersonByName("Nicolas Cage");
+    
+    //Return all the shows in the given country and/or date
+    $Client->TVMaze->getSchedule();
+    
+    //Return all information about a show given the show ID
+    $Client->TVMaze->getShowByShowID(1);
+    
+    //Return all episodes for a show given the show ID
+    $Client->TVMaze->getEpisodesByShowID(1);
+    
+    //Return the cast for a show given the show ID
+    $Client->TVMaze->getCastByShowID(1);
+    
+    //Return a master list of TVMazes shows given the page number
+    $Client->TVMaze->getAllShowsByPage(2);
+    
+    //Return an actor given their ID
+    $Client->TVMaze->getPersonByID(50);
+    
+    //Return an array of all the shows a particular actor has been in
+    $Client->TVMaze->getCastCreditsByID(25);
+    
+    //Return an array of all the positions a particular actor has been in
+    $Client->TVMaze->getCrewCreditsByID(100);
+    
+?>
+```
 
 ### Open Source Projects using this
 
