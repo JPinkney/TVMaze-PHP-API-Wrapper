@@ -42,7 +42,7 @@ class TVProduction {
 	/**
 	 * @param $production_data
 	 */
-	function __construct($production_data){
+	public function __construct($production_data){
 		$this->id = $production_data['id'];
 		$this->url = $production_data['url'];
 		$this->name = $production_data['name'];
@@ -51,6 +51,4 @@ class TVProduction {
 		$this->originalImage = $production_data['image']['original'];
 	}
 
-};
-
-?>
+}

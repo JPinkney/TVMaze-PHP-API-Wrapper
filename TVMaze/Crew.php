@@ -22,8 +22,8 @@ class Crew {
 	/**
 	 * @param $crew_data
 	 */
-	function __construct($crew_data){
+	public function __construct($crew_data){
 		$this->type = $crew_data['type'];
 	}
 
-};
+}

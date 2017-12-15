@@ -39,5 +39,3 @@ class Client
 		$this->TVMaze = new TVMaze();
 	}
 }
-
-?>

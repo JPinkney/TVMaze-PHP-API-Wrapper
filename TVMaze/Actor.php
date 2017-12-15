@@ -20,6 +20,4 @@ namespace JPinkney\TVMaze;
  */
 class Actor extends TVProduction {
 
-};
-
-?>
+}

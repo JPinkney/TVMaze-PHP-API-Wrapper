@@ -47,7 +47,7 @@ class Episode extends TVProduction {
 	/**
 	 * @param $episode_data
 	 */
-	function __construct($episode_data){
+	public function __construct($episode_data){
 		parent::__construct($episode_data);
 		$this->season = $episode_data['season'];
 		$this->number = $episode_data['number'];
@@ -58,6 +58,4 @@ class Episode extends TVProduction {
 		$this->summary = strip_tags($episode_data['summary']);
 	}
 
-};
-
-?>
+}
