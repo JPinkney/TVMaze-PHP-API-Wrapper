@@ -109,7 +109,7 @@ class TVShow extends TVProduction{
 	/**
 	 * @param $show_data
 	 */
-	function __construct($show_data){
+	public function __construct($show_data){
 		parent::__construct($show_data);
 		$this->type = $show_data['type'];
 		$this->language = $show_data['language'];
@@ -130,12 +130,12 @@ class TVShow extends TVProduction{
 		$this->summary = strip_tags($show_data['summary']);
 		$this->akas = (isset($show_data['_embedded']['akas']) ? $show_data['_embedded']['akas'] : null);
 
-		$current_date = date("Y-m-d");
+		$current_date = date('Y-m-d');
 		if (!empty($show_data['_embedded']['episodes'])) {
 			foreach ($show_data['_embedded']['episodes'] as $episode) {
 				if ($episode['airdate'] >= $current_date) {
 					$this->nextAirDate = $episode['airdate'];
-					$this->airTime = date("g:i A", $episode['airtime']);
+					$this->airTime = date('g:i A', $episode['airtime']);
 					$this->airDay = date('l', strtotime($episode['airdate']));
 					break;
 				}
@@ -150,10 +150,8 @@ class TVShow extends TVProduction{
 	 *
 	 * @return bool
 	 */
-	function isEmpty(){
-		return($this->id == null || $this->id == 0 && $this->url == null && $this->name == null);
+	public function isEmpty(){
+		return($this->id == null || ($this->id == 0 && $this->url == null && $this->name == null));
 	}
 
-};
-
-?>
+}

@@ -4,7 +4,7 @@ namespace JPinkney\TVMaze;
 
 class TVMaze {
 
-	CONST APIURL = 'http://api.tvmaze.com';
+	CONST APIURL = 'https://api.tvmaze.com';
 
 	/**
 	 * Takes in a show name
@@ -14,10 +14,10 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function search($show_name)
+	public function search($show_name)
 	{
 		$relevant_shows = false;
-		$url = self::APIURL."/search/shows?q=" . rawurlencode($show_name);
+		$url = self::APIURL. '/search/shows?q=' . rawurlencode($show_name);
 
 		$shows = $this->getFile($url);
 
@@ -39,9 +39,9 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function singleSearch($show_name){
+	public function singleSearch($show_name){
 
-		$url = self::APIURL."/singlesearch/shows?q=" . rawurlencode($show_name) . '&embed=episodes';
+		$url = self::APIURL. '/singlesearch/shows?q=' . rawurlencode($show_name) . '&embed=episodes';
 		$shows = $this->getFile($url);
 
 		$episode_list = [];
@@ -63,10 +63,10 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function singleSearchAkas($show_name)
+	public function singleSearchAkas($show_name)
 	{
 		$TVShow = false;
-		$url = self::APIURL . "/singlesearch/shows?q=" . rawurlencode($show_name) . '&embed=akas';
+		$url = self::APIURL . '/singlesearch/shows?q=' . rawurlencode($show_name) . '&embed=akas';
 		$shows = $this->getFile($url);
 
 		if (is_array($shows)) {
@@ -84,7 +84,7 @@ class TVMaze {
 	 *
 	 * @return TVShow
 	 */
-	function getShowBySiteID($site, $ID){
+	public function getShowBySiteID($site, $ID){
 		$site = strtolower($site);
 		$url = self::APIURL.'/lookup/shows?'.$site.'='.$ID;
 		$show = $this->getFile($url);
@@ -99,7 +99,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getPersonByName($name){
+	public function getPersonByName($name){
 		$name = strtolower($name);
 		$url = self::APIURL.'/search/people?q='.$name;
 		$person = $this->getFile($url);
@@ -120,7 +120,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getSchedule($country = null, $date = null){
+	public function getSchedule($country = null, $date = null){
 		if($country != null && $date != null) {
 			$url = self::APIURL . '/schedule?country=' . $country .'&date='. $date;
 		} else if($country == null && $date != null){
@@ -151,7 +151,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getShowByShowID($ID, $embed_cast=null){
+	public function getShowByShowID($ID, $embed_cast=null){
 		if($embed_cast === true){
 			$url = self::APIURL.'/shows/'.$ID.'?embed=cast';
 		}else{
@@ -164,22 +164,23 @@ class TVMaze {
 		foreach($show['_embedded']['cast'] as $person){
 			$actor = new Actor($person['person']);
 			$character = new Character($person['character']);
-			array_push($cast, [$actor, $character]);
+			$cast[] = [$actor, $character];
 		}
 
 		$TVShow = new TVShow($show);
 
 		return $embed_cast === true ? [$TVShow, $cast] : [$TVShow];
 	}
-
+	
 	/**
 	 * Takes in a show ID and outputs the AKA Object
 	 *
-	 * @param      $ID
 	 *
-	 * @return array
+	 * @param $ID
+	 *
+	 * @return bool|\JPinkney\TVMaze\AKA
 	 */
-	function getShowAKAs($ID)
+	public function getShowAKAs($ID)
 	{
 		$url = self::APIURL . '/shows/' . $ID . '/akas';
 
@@ -202,7 +203,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getEpisodesByShowID($ID){
+	public function getEpisodesByShowID($ID){
 
 		$url = self::APIURL.'/shows/'.$ID.'/episodes';
 
@@ -226,7 +227,7 @@ class TVMaze {
 	 *
 	 * @return Episode|mixed
 	 */
-	function getEpisodeByNumber($ID, $season, $episode)
+	public function getEpisodeByNumber($ID, $season, $episode)
 	{
 		$ep = false;
 		$url = self::APIURL . '/shows/' . $ID . '/episodebynumber?season='. $season . '&number=' . $episode;
@@ -245,7 +246,7 @@ class TVMaze {
 	 *
 	 * @return Episode|mixed
 	 */
-	function getEpisodesByAirdate($ID, $airdate)
+	public function getEpisodesByAirdate($ID, $airdate)
 	{
 		$url = self::APIURL . '/shows/' . $ID . '/episodesbydate?date=' . date('Y-m-d', strtotime($airdate));
 		$episodes = $this->getFile($url);
@@ -267,7 +268,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getCastByShowID($ID){
+	public function getCastByShowID($ID){
 		$url = self::APIURL.'/shows/'.$ID.'/cast';
 		$people = $this->getFile($url);
 
@@ -275,7 +276,7 @@ class TVMaze {
 		foreach($people as $person){
 			$actor = new Actor($person['person']);
 			$character = new Character($person['character']);
-			array_push($cast, [$actor, $character]);
+			$cast[] = [$actor, $character];
 		}
 
 		return $cast;
@@ -288,7 +289,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getAllShowsByPage($page=null){
+	public function getAllShowsByPage($page=null){
 		if($page == null){
 			$url = self::APIURL.'/shows';
 		}else{
@@ -312,7 +313,7 @@ class TVMaze {
 	 *
 	 * @return Actor
 	 */
-	function getPersonByID($ID){
+	public function getPersonByID($ID){
 		$url = self::APIURL.'/people/'.$ID;
 		$show = $this->getFile($url);
 		return new Actor($show);
@@ -325,7 +326,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getCastCreditsByID($ID){
+	public function getCastCreditsByID($ID){
 		$url = self::APIURL.'/people/'.$ID.'/castcredits?embed=show';
 		$castCredit = $this->getFile($url);
 
@@ -344,7 +345,7 @@ class TVMaze {
 	 *
 	 * @return array
 	 */
-	function getCrewCreditsByID($ID){
+	public function getCrewCreditsByID($ID){
 		$url = self::APIURL.'/people/'.$ID.'/crewcredits?embed=show';
 		$crewCredit = $this->getFile($url);
 
@@ -352,7 +353,7 @@ class TVMaze {
 		foreach($crewCredit as $series){
 			$position = $series['type'];
 			$TVShow = new TVShow($series['_embedded']['show']);
-			array_push($shows_appeared, [$position, $TVShow]);
+			$shows_appeared[] = [$position, $TVShow];
 		}
 		return $shows_appeared;
 	}
@@ -377,12 +378,9 @@ class TVMaze {
 		$response = json_decode($result, TRUE);
 		if (is_array($response) && count($response) > 0 && (!isset($response['status']) || $response['status'] != '404')) {
 			return $response;
-		} else {
-			return false;
 		}
+		
+		return false;
 	}
 
-};
-
-
-?>
+}
