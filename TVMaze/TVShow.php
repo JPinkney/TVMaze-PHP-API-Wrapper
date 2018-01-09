@@ -123,7 +123,7 @@ class TVShow extends TVProduction{
 		$this->network = $show_data['network']['name'];
 		$this->webChannel = $show_data['webChannel'];
 		$this->country = $show_data['network']['country']['code'];
-		if (count($show_data['webChannel']) > 0) {
+		if ($show_data['webChannel'] !== null && $show_data['webChannel']['country'] !== null) {
 			$this->country = $show_data['webChannel']['country']['code'];
 		}
 		$this->externalIDs = $show_data['externals'];
