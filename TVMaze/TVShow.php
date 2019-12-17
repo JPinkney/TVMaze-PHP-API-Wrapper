@@ -117,10 +117,10 @@ class TVShow extends TVProduction{
 		$this->status = isset($show_data['status']) ? $show_data['status'] : null;
 		$this->runtime = isset($show_data['runtime']) ? $show_data['runtime'] : null;
 		$this->premiered = isset($show_data['premiered']) ? $show_data['premiered'] : null;
-		$this->rating = $isset($show_data['rating']) ? $show_data['rating'] : null;
+		$this->rating = isset($show_data['rating']) ? $show_data['rating'] : null;
 		$this->weight = isset($show_data['weight']) ? $show_data['weight'] : null;
 		$this->network_array = isset($show_data['network']) ? $show_data['network'] : null;
-		$this->network = isset($show_data['network']['name]) ? $show_data['network']['name'] : null;
+		$this->network = isset($show_data['network']['name']) ? $show_data['network']['name'] : null;
 		$this->webChannel = isset($show_data['webChannel']) ? $show_data['webChannel'] : null];
 		$this->country = isset($show_data['network']['country']['code']) ? $show_data['network']['country']['code'] : null;
 		if ($show_data['webChannel'] !== null && $show_data['webChannel']['country'] !== null) {
