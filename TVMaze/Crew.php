@@ -23,7 +23,7 @@ class Crew {
 	 * @param $crew_data
 	 */
 	public function __construct($crew_data){
-		$this->type = $crew_data['type'];
+		$this->type = isset($crew_data['type']) ? $crew_data['type'] : null;
 	}
 
 }
