@@ -49,13 +49,13 @@ class Episode extends TVProduction {
 	 */
 	public function __construct($episode_data){
 		parent::__construct($episode_data);
-		$this->season = $episode_data['season'];
-		$this->number = $episode_data['number'];
-		$this->airdate = $episode_data['airdate'];
-		$this->airtime = $episode_data['airtime'];
-		$this->airstamp = $episode_data['airstamp'];
-		$this->runtime = $episode_data['runtime'];
-		$this->summary = strip_tags($episode_data['summary']);
+		$this->season = isset($episode_data['season']) ? $episode_data['season'] : null;
+		$this->number = isset($episode_data['number']) ? $episode_data['number'] : null;
+		$this->airdate = isset($episode_data['airdate']) ? $episode_data['airdate'] : null;
+		$this->airtime = isset($episode_data['airtime']) ? $episode_data['airtime'] : null;
+		$this->airstamp = isset($episode_data['airstamp']) ? $episode_data['airstamp'] : null;
+		$this->runtime = isset($episode_data['runtime']) ? $episode_data['runtime'] : null;
+		$this->summary = isset($episode_data['summary']) ? strip_tags($episode_data['summary']) : null;
 	}
 
 }
