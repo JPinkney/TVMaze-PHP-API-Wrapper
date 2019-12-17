@@ -111,23 +111,23 @@ class TVShow extends TVProduction{
 	 */
 	public function __construct($show_data){
 		parent::__construct($show_data);
-		$this->type = $show_data['type'];
-		$this->language = $show_data['language'];
-		$this->genres = $show_data['genres'];
-		$this->status = $show_data['status'];
-		$this->runtime = $show_data['runtime'];
-		$this->premiered = $show_data['premiered'];
-		$this->rating = $show_data['rating'];
-		$this->weight = $show_data['weight'];
-		$this->network_array = $show_data['network'];
-		$this->network = $show_data['network']['name'];
-		$this->webChannel = $show_data['webChannel'];
-		$this->country = $show_data['network']['country']['code'];
+		$this->type = isset($show_data['type']) ? $show_data['type'] : null;
+		$this->language = isset($show_data['language']) ? $show_data['language'] : null;
+		$this->genres = isset($show_data['genres']) ? $show_data['genres'] : null;
+		$this->status = isset($show_data['status']) ? $show_data['status'] : null;
+		$this->runtime = isset($show_data['runtime']) ? $show_data['runtime'] : null;
+		$this->premiered = isset($show_data['premiered']) ? $show_data['premiered'] : null;
+		$this->rating = isset($show_data['rating']) ? $show_data['rating'] : null;
+		$this->weight = isset($show_data['weight']) ? $show_data['weight'] : null;
+		$this->network_array = isset($show_data['network']) ? $show_data['network'] : null;
+		$this->network = isset($show_data['network']['name']) ? $show_data['network']['name'] : null;
+		$this->webChannel = isset($show_data['webChannel']) ? $show_data['webChannel'] : null];
+		$this->country = isset($show_data['network']['country']['code']) ? $show_data['network']['country']['code'] : null;
 		if ($show_data['webChannel'] !== null && $show_data['webChannel']['country'] !== null) {
 			$this->country = $show_data['webChannel']['country']['code'];
 		}
-		$this->externalIDs = $show_data['externals'];
-		$this->summary = strip_tags($show_data['summary']);
+		$this->externalIDs = isset($show_data['externals']) ? $show_data['externals'] : null;
+		$this->summary = isset($show_data['summary']) ? strip_tags($show_data['summary']) : null;
 		$this->akas = (isset($show_data['_embedded']['akas']) ? $show_data['_embedded']['akas'] : null);
 
 		$current_date = date('Y-m-d');
