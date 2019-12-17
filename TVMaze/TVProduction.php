@@ -43,12 +43,12 @@ class TVProduction {
 	 * @param $production_data
 	 */
 	public function __construct($production_data){
-		$this->id = $production_data['id'];
-		$this->url = $production_data['url'];
-		$this->name = $production_data['name'];
-		$this->images = $production_data['image'];
-		$this->mediumImage = $production_data['image']['medium'];
-		$this->originalImage = $production_data['image']['original'];
+		$this->id = isset($production_data['id']) ? $production_data['id'] : null;
+		$this->url = isset($production_data['url']) ? $production_data['url'] : null;
+		$this->name = isset($production_data['name']) ? $production_data['name'] : null;
+		$this->images = isset($production_data['image']) ? $production_data['image'] : null;
+		$this->mediumImage = isset($production_data['image']['medium']) ? $production_data['image']['medium'] : null;
+		$this->originalImage = isset($production_data['image']['original']) ? $production_data['image']['original'] : null;
 	}
 
 }
