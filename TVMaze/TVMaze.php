@@ -210,11 +210,12 @@ class TVMaze {
 		$episodes = $this->getFile($url);
 
 		$allEpisodes = [];
-		foreach($episodes as $episode){
-			$ep = new Episode($episode);
-			$allEpisodes[] = $ep;
+		if (! empty($episodes)) {
+			foreach($episodes as $episode){
+				$ep = new Episode($episode);
+				$allEpisodes[] = $ep;
+			}
 		}
-
 		return $allEpisodes;
 	}
 
